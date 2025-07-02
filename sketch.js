@@ -5,6 +5,9 @@ let imagenFondo;
 let sonidoRaqueta;
 let sonidoGol;
 
+let puntosJugador = 0;
+let puntosComputadora = 0;
+
 
 class Pelota {
     constructor(x, y, diameter, vx, vy) {
@@ -25,6 +28,12 @@ class Pelota {
 
         if (this.x > width - this.diameter / 2 || this.x < this.diameter / 2) {
             sonidoGol.play();
+            if (this.x < width / 2) {
+                puntosComputadora++;
+            } else {
+                puntosJugador++;
+            }
+            narrarPuntos(puntosJugador, puntosComputadora);
             this.reset();
         }
 
@@ -144,6 +153,16 @@ function setup() {
     raqueta = new Raqueta(20, 150, 20, 100, 5);
     computadora = new Raqueta(760, 150, 20, 100, 5);
 }
+
+function narrarPuntos(jugador, computadora) {
+    //narra los puntos utilizando la api speechApi
+    //narra utilizando el idioma español mexico
+    let puntos = 'El marcador esta' + puntosJugador + ' a' + puntosComputadora;
+    let mensaje = new SpeechSynthesisUtterance(puntos);
+    mensaje.lang = 'es-MX';
+    speechSynthesis.speak(mensaje);
+}
+
 
 function draw() {
     //background(0);
